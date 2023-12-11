@@ -6,7 +6,7 @@ module.exports = merge(common, {
     mode: "development",
     output : {
         filename: "main.[contenthash].js",
-        path: path.resolve(__dirname, "./dist")
+        path: path.resolve(__dirname, "./dist"),
     },
     devServer: {
         static: {
@@ -14,7 +14,9 @@ module.exports = merge(common, {
         },
         compress: true,
         watchFiles: {
-            paths: ["src/**/*.html"],
+            paths: [
+                "src/**/*.html"
+            ],
         },
         port: 9000,
       },
