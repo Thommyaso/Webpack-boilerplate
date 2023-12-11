@@ -1,2 +1,2 @@
 import "./style.scss"
-console.log('abcdedsdsf')
+console.log('works fine')
