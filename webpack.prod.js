@@ -26,5 +26,12 @@ module.exports = merge(common, {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.(?:js|mjs|cjs)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                  }
+              },
         ]},
 });
