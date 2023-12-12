@@ -1,4 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const winston = require('winston');
+
 
 module.exports = {
     entry: './src/index.js',
