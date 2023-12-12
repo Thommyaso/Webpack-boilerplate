@@ -1,13 +1,13 @@
-const path = require("path");
+// const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: './src/index.js',
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/index.html",
-            inject: "body",
-        })
+            template: './src/index.html',
+            inject: 'body',
+        }),
     ],
     module: {
         rules: [
@@ -15,11 +15,11 @@ module.exports = {
                 test: /\.html$/,
                 use: [
                     {
-                        loader:"html-loader",
+                        loader: 'html-loader',
                         options: {
                             esModule: false,
-                        }
-                    }
+                        },
+                    },
                 ],
             },
             {
@@ -28,12 +28,12 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: "[name].[hash].[ext]",
-                            outputPath: "images"
-                        }
+                            name: '[name].[hash].[ext]',
+                            outputPath: 'images',
+                        },
                     },
                 ],
-            }
-        ]
-    }
-}
+            },
+        ],
+    },
+};
