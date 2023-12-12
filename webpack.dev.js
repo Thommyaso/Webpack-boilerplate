@@ -6,11 +6,12 @@ module.exports = merge(common, {
     mode: "development",
     output : {
         filename: "main.[contenthash].js",
-        path: path.resolve(__dirname, "./dist"),
+        path: path.resolve(__dirname, "./dev"),
     },
+    devtool: "source-map",
     devServer: {
         static: {
-          directory: path.join(__dirname, 'dist'),
+          directory: path.join(__dirname, 'dev'),
         },
         compress: true,
         watchFiles: {
@@ -20,4 +21,16 @@ module.exports = merge(common, {
         },
         port: 9000,
       },
+      module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                include: path.resolve(__dirname, 'src/sass'),
+                use: [
+                    "style-loader",
+                    "css-loader", 
+                    "sass-loader"
+                ]
+            },
+        ]}
 })

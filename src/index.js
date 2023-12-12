@@ -1,2 +1,2 @@
-import "./style.scss"
-console.log('works fine!!')
+import "./sass/style.scss"
+console.log('works fine!')
