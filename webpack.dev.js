@@ -28,6 +28,17 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-loader',
+                        options: {
+                            esModule: false,
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.scss$/,
                 include: path.resolve(__dirname, 'src/sass'),
                 use: [
