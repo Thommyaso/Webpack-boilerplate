@@ -33,6 +33,10 @@ module.exports = {
                         loader: 'html-loader',
                         options: {
                             esModule: false,
+                            preprocessor: (content, loaderContext) => {
+                              // Replace specific img tags with div
+                              return content.replace('<span>webpack</span>', '<div$1>webpack</div>');
+                            },
                         },
                     },
                 ],
