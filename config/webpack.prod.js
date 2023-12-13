@@ -12,14 +12,14 @@ module.exports = merge(common, {
     ],
     output: {
         filename: 'main.[contenthash].js',
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '../dist'),
         clean: true,
     },
     module: {
         rules: [
             {
                 test: /\.scss$/,
-                include: path.resolve(__dirname, 'src/sass'),
+                include: path.resolve(__dirname, '../src/sass'),
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
@@ -30,8 +30,8 @@ module.exports = merge(common, {
                 test: /\.(?:js|mjs|cjs)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader'
-                  }
-              },
+                    loader: 'babel-loader',
+                },
+            },
         ]},
 });
