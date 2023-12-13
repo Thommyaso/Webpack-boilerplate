@@ -1,4 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const SpritesmithPlugin = require('webpack-spritesmith');
+
 
 module.exports = {
     entry: './src/index.js',
@@ -7,6 +10,19 @@ module.exports = {
             template: './src/index.html',
             inject: 'body',
         }),
+        new SpritesmithPlugin({   // clean option has been switched off in webpack.prod.js to be able to load unused sprites for tests
+            src: {
+              cwd: path.resolve(__dirname, './src/images/sprites'),
+              glob: '*.png',  // Adjust this pattern based on your sprite images
+            },
+            target: {
+              image: path.resolve(__dirname, 'dist/images/sprites/sprite.png'),  // Adjust output path
+              css: path.resolve(__dirname, 'dist/images/sprites/sprite.css'),  // Adjust output path
+            },
+            apiOptions: {
+              cssImageRef: '~sprite.png',  // Adjust image reference in CSS
+            },
+          }),
     ],
     module: {
         rules: [
@@ -23,6 +39,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
+                exclude: /src\/images\/sprites/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -33,6 +50,42 @@ module.exports = {
                     },
                 ],
             },
+            /* {
+                test: /src\/images\/sprites/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                      name: '[name].[ext]',
+                      outputPath: 'images/sprites', // or any other output directory
+                    },
+                  },
+                  {
+                    loader: 'image-webpack-loader',
+                    options: {
+                        mozjpeg: {
+                          progressive: true,
+                        },
+                        // optipng.enabled: false will disable optipng
+                        optipng: {
+                          enabled: false,
+                        },
+                        pngquant: {
+                          quality: [0.65, 0.90],
+                          speed: 4
+                        },
+                        gifsicle: {
+                          interlaced: false,
+                        },
+                        // the webp option will enable WEBP
+                        webp: {
+                          quality: 75
+                        }
+                      }
+                  },
+                ],
+              }, */
+            
         ],
     },
 };
