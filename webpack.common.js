@@ -10,7 +10,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'body',
-            //customHeadTags: '<link rel="stylesheet" href="./images/sprites/sprite.css">',
         }),
         new HtmlWebpackTagsPlugin({
           tags: ['./images/sprites/sprite.css'],
@@ -40,32 +39,28 @@ module.exports = {
                     options: {
                         esModule: false,
                         preprocessor: (content, loaderContext) => {
-                            content = content.replace(/<img([^>]*)>/g, (match, attributes) => {
-                                // Extract the value of the src attribute
-                                const srcValue = attributes.match(/src=["'](.*?)["']/);
-                
-                                if (srcValue) {
-                                    // Extract the filename from the path and remove the extension
-                                    const filenameWithExtension = srcValue[1].split('/').pop();
-                                    const filenameWithoutExtension = filenameWithExtension.replace(/\.[^.]+$/, '');
-                
-                                    // Extract existing classes from the attributes
-                                    const existingClassesMatch = attributes.match(/class=["'](.*?)["']/);
-                                    const existingClasses = existingClassesMatch ? existingClassesMatch[1] : '';
-                
-                                    // Create a div with the extracted classes and the original attributes
-                                    const newClassName = `icon-${filenameWithoutExtension}`;
-                                    const className = `class="${existingClasses} ${newClassName}"`;
-                
-                                    return `<div ${className}></div>`;
-                                } else {
-                                    // If src attribute is not found, just create an empty div
-                                    return '<div></div>';
-                                }
-                            });
-                
-                            return content;
-                        },
+                          content = content.replace(/<img([^>]*)src=["']\.\/images\/sprites\/([^"']+)["']([^>]*)>/g, (match, beforeSrc, filenameWithExtension, afterAttributes) => {
+                              // Extract the filename from the path and remove the extension
+                              const filenameWithoutExtension = filenameWithExtension.replace(/\.[^.]+$/, '');
+                      
+                              // Extract existing classes from the attributes
+                              const existingClassesMatch = match.match(/class=["'](.*?)["']/);
+                              const existingClasses = existingClassesMatch ? existingClassesMatch[1] : '';
+                      
+                              // Create a div with the extracted classes and the original attributes
+                              const newClassName = `icon-${filenameWithoutExtension}`;
+                              const updatedClasses = existingClasses ? `${existingClasses} ${newClassName}` : newClassName;
+                              const className = `class="${updatedClasses}"`;
+                      
+                              return `<div ${className}${afterAttributes}></div>`;
+                          });
+                      
+                          return content;
+                      }
+                      
+                      
+                      
+                      
                     },
                 },
                 
