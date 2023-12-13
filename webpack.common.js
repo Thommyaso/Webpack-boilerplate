@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const SpritesmithPlugin = require('webpack-spritesmith');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 
 
 module.exports = {
@@ -9,7 +10,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'body',
+            //customHeadTags: '<link rel="stylesheet" href="./images/sprites/sprite.css">',
         }),
+        new HtmlWebpackTagsPlugin({
+          tags: ['./images/sprites/sprite.css'],
+          append: true,
+      }),
         new SpritesmithPlugin({   // clean option has been switched off in webpack.prod.js to be able to load unused sprites for tests
             src: {
               cwd: path.resolve(__dirname, './src/images/sprites'),
@@ -20,7 +26,7 @@ module.exports = {
               css: path.resolve(__dirname, 'dist/images/sprites/sprite.css'),  // Adjust output path
             },
             apiOptions: {
-              cssImageRef: '~sprite.png',  // Adjust image reference in CSS
+              cssImageRef: './sprite.png',  // Adjust image reference in CSS
             },
           }),
     ],
@@ -29,23 +35,40 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: [
-                    {
-                        loader: 'html-loader',
-                        options: {
-                            esModule: false,
-                            preprocessor: (content, loaderContext) => {
-                              // Replace img tags with div and inject src as class
-                              return content.replace(/<img([^>]*)>/g, (match, attributes) => {
+                  {
+                    loader: 'html-loader',
+                    options: {
+                        esModule: false,
+                        preprocessor: (content, loaderContext) => {
+                            content = content.replace(/<img([^>]*)>/g, (match, attributes) => {
                                 // Extract the value of the src attribute
                                 const srcValue = attributes.match(/src=["'](.*?)["']/);
-                                
-                                // Create a div with the extracted class and the original attributes
-                                const className = srcValue ? `class="${srcValue[1]}"` : '';
-                                return `<div ${className}></div>`;
-                              });
-                            },
+                
+                                if (srcValue) {
+                                    // Extract the filename from the path and remove the extension
+                                    const filenameWithExtension = srcValue[1].split('/').pop();
+                                    const filenameWithoutExtension = filenameWithExtension.replace(/\.[^.]+$/, '');
+                
+                                    // Extract existing classes from the attributes
+                                    const existingClassesMatch = attributes.match(/class=["'](.*?)["']/);
+                                    const existingClasses = existingClassesMatch ? existingClassesMatch[1] : '';
+                
+                                    // Create a div with the extracted classes and the original attributes
+                                    const newClassName = `icon-${filenameWithoutExtension}`;
+                                    const className = `class="${existingClasses} ${newClassName}"`;
+                
+                                    return `<div ${className}></div>`;
+                                } else {
+                                    // If src attribute is not found, just create an empty div
+                                    return '<div></div>';
+                                }
+                            });
+                
+                            return content;
                         },
                     },
+                },
+                
                 ],
             },
             {
@@ -61,42 +84,6 @@ module.exports = {
                     },
                 ],
             },
-            /* {
-                test: /src\/images\/sprites/,
-                use: [
-                  {
-                    loader: 'file-loader',
-                    options: {
-                      name: '[name].[ext]',
-                      outputPath: 'images/sprites', // or any other output directory
-                    },
-                  },
-                  {
-                    loader: 'image-webpack-loader',
-                    options: {
-                        mozjpeg: {
-                          progressive: true,
-                        },
-                        // optipng.enabled: false will disable optipng
-                        optipng: {
-                          enabled: false,
-                        },
-                        pngquant: {
-                          quality: [0.65, 0.90],
-                          speed: 4
-                        },
-                        gifsicle: {
-                          interlaced: false,
-                        },
-                        // the webp option will enable WEBP
-                        webp: {
-                          quality: 75
-                        }
-                      }
-                  },
-                ],
-              }, */
-            
         ],
     },
 };

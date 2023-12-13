@@ -21,6 +21,7 @@
     "file-loader": "^6.2.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.4",
+    "html-webpack-tags-plugin": "^3.0.2",
     "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.7.6",
     "sass": "^1.69.5",
