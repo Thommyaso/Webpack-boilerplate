@@ -34,8 +34,15 @@ module.exports = {
                         options: {
                             esModule: false,
                             preprocessor: (content, loaderContext) => {
-                              // Replace specific img tags with div
-                              return content.replace(/<img([^>]*)>/g, '<div$1>webpack</div>');
+                              // Replace img tags with div and inject src as class
+                              return content.replace(/<img([^>]*)>/g, (match, attributes) => {
+                                // Extract the value of the src attribute
+                                const srcValue = attributes.match(/src=["'](.*?)["']/);
+                                
+                                // Create a div with the extracted class and the original attributes
+                                const className = srcValue ? `class="${srcValue[1]}"` : '';
+                                return `<div ${className}></div>`;
+                              });
                             },
                         },
                     },
