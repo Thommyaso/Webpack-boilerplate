@@ -40,7 +40,7 @@ module.exports = merge(common, {
             },
             {
                 test: /\.scss$/,
-                include: path.resolve(__dirname, 'src/sass'),
+                include: path.resolve(__dirname, '../src/sass'),
                 use: [
                     'style-loader',
                     'css-loader',

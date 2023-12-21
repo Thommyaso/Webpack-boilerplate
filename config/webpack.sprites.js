@@ -5,12 +5,12 @@ module.exports = {
     plugins: [
         new SpritesmithPlugin({
             src: {
-                cwd: path.resolve(__dirname, './src/images/sprites'),
+                cwd: path.resolve(__dirname, '../src/images/sprites'),
                 glob: '*.png', // Adjust this pattern based on your sprite images
             },
             target: {
-                image: path.resolve(__dirname, 'dist/images/sprites/sprite.png'), // Adjust output path
-                css: path.resolve(__dirname, 'dist/images/sprites/sprite.css'), // Adjust output path
+                image: path.resolve(__dirname, '../dist/images/sprites/sprite.png'), // Adjust output path
+                css: path.resolve(__dirname, '../dist/images/sprites/sprite.css'), // Adjust output path
             },
             apiOptions: {
                 cssImageRef: './sprite.png', // Adjust image reference in CSS
