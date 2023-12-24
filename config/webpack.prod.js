@@ -1,25 +1,31 @@
 const path = require('path');
-const common = require('./webpack.common');
 const {merge} = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const sprites = require('./webpack.sprites');
+const common = require('./webpack.common');
+const paths = require('./paths');
 
-module.exports = merge(common, {
+module.exports = merge(common, sprites, {
     mode: 'production',
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),
+        new HtmlWebpackTagsPlugin({
+            tags: [paths.prod.spritesStylesheet],
+            append: true,
+        }),
     ],
     output: {
         filename: 'main.[contenthash].js',
-        path: path.resolve(__dirname, '../dist'),
-        clean: true,
+        path: path.resolve(__dirname, paths.prod.outputFolder),
     },
     module: {
         rules: [
             {
                 test: /\.scss$/,
-                include: path.resolve(__dirname, '../src/sass'),
+                include: path.resolve(__dirname, paths.main.styleFolder),
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
