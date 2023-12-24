@@ -1,10 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const paths = require('./paths');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: paths.main.mainEntry,
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            template: paths.main.htmlTemplate,
             inject: 'body',
         }),
     ],

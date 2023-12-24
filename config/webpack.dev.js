@@ -2,6 +2,7 @@ const path = require('path');
 const common = require('./webpack.common');
 const {merge} = require('webpack-merge');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const paths = require('./paths');
 
 module.exports = merge(common, {
     mode: 'development',
@@ -10,17 +11,17 @@ module.exports = merge(common, {
     })],
     output: {
         filename: 'main.[contenthash].js',
-        path: path.resolve(__dirname, './dev'),
+        path: path.resolve(__dirname, paths.dev.outputFolder),
     },
     devtool: 'source-map',
     devServer: {
         static: {
-            directory: path.join(__dirname, 'dev'),
+            directory: path.join(__dirname, paths.dev.serverFolder),
         },
         compress: true,
         watchFiles: {
             paths: [
-                'src/**/*.html',
+                paths.main.watchHtml,
             ],
         },
         port: 9000,
@@ -40,7 +41,7 @@ module.exports = merge(common, {
             },
             {
                 test: /\.scss$/,
-                include: path.resolve(__dirname, '../src/sass'),
+                include: path.resolve(__dirname, paths.main.styleFolder),
                 use: [
                     'style-loader',
                     'css-loader',

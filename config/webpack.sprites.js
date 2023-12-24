@@ -1,19 +1,20 @@
 const SpritesmithPlugin = require('webpack-spritesmith');
 const path = require('path');
+const paths = require('./paths');
 
 module.exports = {
     plugins: [
         new SpritesmithPlugin({
             src: {
-                cwd: path.resolve(__dirname, '../src/images/sprites'),
-                glob: '*.png', // Adjust this pattern based on your sprite images
+                cwd: path.resolve(__dirname, paths.prod.spritesLocation),
+                glob: paths.prod.spritesSrcGlob, // Adjust this pattern based on your sprite images
             },
             target: {
-                image: path.resolve(__dirname, '../dist/images/sprites/sprite.png'), // Adjust output path
-                css: path.resolve(__dirname, '../dist/images/sprites/sprite.css'), // Adjust output path
+                image: path.resolve(__dirname, paths.prod.spritesImgOutput), // Adjust output path
+                css: path.resolve(__dirname, paths.prod.spritesStylesOutput), // Adjust output path
             },
             apiOptions: {
-                cssImageRef: './sprite.png', // Adjust image reference in CSS
+                cssImageRef: paths.prod.spriteCssImgRef, // Adjust image reference in CSS
             },
         }),
     ],
@@ -26,10 +27,10 @@ module.exports = {
                         loader: 'html-loader',
                         options: {
                             esModule: false,
-                            preprocessor: (content, loaderContext) => {
+                            preprocessor: (content) => {
                                 content = content.replace(
                                     /<img([^>]*)src=["']\.\/images\/sprites\/([^"']+)["']([^>]*)>/g,
-                                    (match, beforeSrc, filenameWithExtension, afterAttributes) => {
+                                    (match, __beforeSrc, filenameWithExtension, afterAttributes) => {
                                     // Extract the filename from the path and remove the extension
                                         const filenameWithoutExtension = filenameWithExtension.replace(/\.[^.]+$/, '');
 
