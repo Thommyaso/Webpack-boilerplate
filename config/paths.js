@@ -1,8 +1,10 @@
+/* eslint-disable max-len */
 const common = {
-    spritesStylesheetPath: 'images/sprites/',
-    spritesFileName: 'sprite', // set name for output css and img sprite file name
+    spritesStylesheetPath: 'images/sprites/', // Output path for sprite files
+    spritesFileName: 'sprite', // Set name for output css and img sprite file name
     spritesType: '.png', // This sets what extention will be used for sprites in the whole project
     devFolder: 'dev',
+    buildFolder: 'dist', // Name of the final build folder (if name gets changed .gitignore will require updating)
 };
 
 module.exports = {
@@ -19,10 +21,10 @@ module.exports = {
     prod: {
         spritesSrcGlob: `*${common.spritesType}`,
         spritesStylesheet: `./${common.spritesStylesheetPath}${common.spritesFileName}.css`,
-        spritesStylesOutput: `../dist/${common.spritesStylesheetPath}${common.spritesFileName}.css`,
-        spritesImgOutput: `../dist/${common.spritesStylesheetPath}${common.spritesFileName}${common.spritesType}`,
-        spritesLocation: '../src/images/sprites',
+        spritesStylesOutput: `../${common.buildFolder}/${common.spritesStylesheetPath}${common.spritesFileName}.css`,
+        spritesImgOutput: `../${common.buildFolder}/${common.spritesStylesheetPath}${common.spritesFileName}${common.spritesType}`,
+        spritesLocation: '../src/images/sprites', // Path to images that require converting to sprites
         spriteCssImgRef: `./${common.spritesFileName}${common.spritesType}`,
-        outputFolder: '../dist',
+        outputFolder: `../${common.buildFolder}`,
     },
 };
